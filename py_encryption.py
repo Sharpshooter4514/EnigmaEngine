@@ -14,11 +14,20 @@ def decrypt(text, key):
 # Decrypt a file containing text
 def decrypt_file(filename, key):
     f = Fernet(key)
-    with open(filename, 'rb') as file:
-        encrypted_data = file.read()
-    decrypted_data = f.decrypt(encrypted_data)
-    with open(filename, 'wb') as decrypted_file:
-        decrypted_file.write(decrypted_data)
+    try:
+        with open(filename, 'rb') as file:
+            encrypted_data = file.read()
+        decrypted_data = f.decrypt(encrypted_data)
+        with open(filename, 'wb') as decrypted_file:
+            decrypted_file.write(decrypted_data)
+        print(f'{filepath} decrypted...')
+        time.sleep(2)
+    except FileNotFoundError:
+        print(f'Error: {filename} not found')
+        time.sleep(5)
+    except Exception as e:
+        print(f'Error: {e}')
+        time.sleep(5)
 
 # Encrypt text using the command line
 def encrypt(text, key):
@@ -30,11 +39,20 @@ def encrypt(text, key):
 # Encrypt a file containing text
 def encrypt_file(filename, key):
     f = Fernet(key)
-    with open(filename, 'rb') as file:
-        data = file.read()
-    encrypted_data = f.encrypt(data)
-    with open(filename, 'wb') as encrypted_file:
-        encrypted_file.write(encrypted_data)
+    try:
+        with open(filename, 'rb') as file:
+            data = file.read()
+        encrypted_data = f.encrypt(data)
+        with open(filename, 'wb') as encrypted_file:
+            encrypted_file.write(encrypted_data)
+        print(f'{filename} Encrypted...')
+        time.sleep(2)
+    except FileNotFoundError:
+        print(f'Error: {filename} not found')
+        time.sleep(5)
+    except Exception as e:
+        print(f'Error: {e}')
+        time.sleep(5)
 
 # Generate a new key
 def gen_key(filename):
@@ -93,15 +111,11 @@ if __name__ == '__main__':
                     filepath = input('Enter Name of File: ')
                     os.system('cls' if os.name == 'nt' else 'clear')
                     encrypt_file(filepath, key)
-                    print(f'{filepath} Encrypted...')
-                    time.sleep(2)
                 elif user_choice == 4:
                     os.system('cls' if os.name == 'nt' else 'clear')
                     filepath  = input('Enter Name of File: ')
                     os.system('cls' if os.name == 'nt' else 'clear')
                     decrypt_file(filepath, key)
-                    print(f'{filepath} decrypted...')
-                    time.sleep(2)
                 elif user_choice == 5:
                     os.system('cls' if os.name == 'nt' else 'clear')
                     print('Stopping Encryption Program...')
