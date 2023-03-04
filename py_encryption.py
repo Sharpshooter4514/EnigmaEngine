@@ -6,10 +6,13 @@ import time
 
 # Decrypt text using the command line
 def decrypt(text, key):
-    f = Fernet(key)
-    data_unencrypted = f.decrypt(text)
-    data_unencrypted = data_unencrypted.decode('utf-8')
-    return data_unencrypted
+    try:
+        f = Fernet(key)
+        data_unencrypted = f.decrypt(text)
+        data_unencrypted = data_unencrypted.decode('utf-8')
+        return data_unencrypted
+    except Exception as e:
+        print(f'Error: {e}')
 
 # Decrypt a file containing text
 def decrypt_file(filename, key):
@@ -31,10 +34,13 @@ def decrypt_file(filename, key):
 
 # Encrypt text using the command line
 def encrypt(text, key):
-    f = Fernet(key)
-    text = bytes(text, 'utf-8')
-    data_encrypted = f.encrypt(text)
-    return data_encrypted
+    try:
+        f = Fernet(key)
+        text = bytes(text, 'utf-8')
+        data_encrypted = f.encrypt(text)
+        return data_encrypted
+    except Exception as e:
+        print(f'Error: {e}')
 
 # Encrypt a file containing text
 def encrypt_file(filename, key):
@@ -56,16 +62,25 @@ def encrypt_file(filename, key):
 
 # Generate a new key
 def gen_key(filename):
-    key = Fernet.generate_key()
-    filename = filename + '.pk'
-    with open(filename, 'wb') as x:
-        pickle.dump(key, x)
+    try:
+        key = Fernet.generate_key()
+        filename = filename + '.pk'
+        with open(filename, 'wb') as x:
+            pickle.dump(key, x)
+    except Exception as e:
+        print(f'Error: {e}')
 
 # Load a key for encryption or decryption
 def load_key(filename):
-    with open(filename, 'rb') as x:
-        key = pickle.load(x)
-    return key
+    try:
+        with open(filename, 'rb') as x:
+            key = pickle.load(x)
+        return key
+    except FileNotFoundError:
+        print(f'Error: {filename} not found')
+        time.sleep(5)
+    except Exception as e:
+        print(f'Error: {e}')
 
 if __name__ == '__main__':
 
@@ -138,8 +153,6 @@ if __name__ == '__main__':
             running = False
         else:
             print('Error: Invalid Input')
-        # Clear the console
-        # os.system('cls' if os.name == 'nt' else 'clear')
         
         
 
